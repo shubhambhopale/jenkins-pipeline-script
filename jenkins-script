@@ -1,0 +1,56 @@
+pipeline {
+    agent{
+        label 'windows'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                // Get some code from a GitHub repository
+                echo 'Running a Build step..'
+                git 'https://github.com/shubhambhopale/jenkins-pipeline-script.git'
+                bat 'Build.bat'
+            }
+
+            post {
+                // If Maven was able to run the tests, even if some of the test
+                // failed, record the test results and archive the jar file.
+                success {
+                    echo "All building steps were successful."
+                }
+            }
+        }
+         
+        stage('Test') {
+            steps {
+                // Get some code from a GitHub repository
+                echo 'Running a Test step..'
+                bat 'Test.bat'
+            }
+
+            post {
+                // If Maven was able to run the tests, even if some of the test
+                // failed, record the test results and archive the jar file.
+                success {
+                    echo "All testing steps were successful."
+                }
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // Get some code from a GitHub repository
+                echo 'Running a Deploy step..'
+                bat 'Deploy.bat'
+            }
+
+            post {
+                // If Maven was able to run the tests, even if some of the test
+                // failed, record the test results and archive the jar file.
+                success {
+                    echo "All deployment steps were successful."
+                }
+            }
+        }
+    }
+}
